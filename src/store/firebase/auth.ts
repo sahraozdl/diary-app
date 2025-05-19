@@ -23,7 +23,7 @@ if (!validatedFields.success) {
   }
 
 const { name, email, password } = validatedFields.data;
-
+try {
 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const user = userCredential.user;
 
@@ -36,10 +36,21 @@ const userCredential = await createUserWithEmailAndPassword(auth, email, passwor
   writesCount:0,
   createdAt: new Date(),
 });
-return user;
+return { user };
+  } catch (error) {
+    console.error("Error signing up:", error);
+    return {
+      errors: {
+        email: ["Email already in use."],
+      },
+    };
+  }
 }
 
 export async function signInUser({email, password}:UserTypes) {
+  if (!email || !password) {
+    throw new Error("Email and password are required.");
+  }
   const userCredential = await signInWithEmailAndPassword(
     auth,
     email,
