@@ -4,10 +4,10 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth, db } from "./config";
-import { getDoc, doc, setDoc, serverTimestamp} from "firebase/firestore";
+import { getDoc, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { UserTypes } from "@/types/types";
 import { SignupFormSchema } from "@/app/lib/definitions";
-import {  } from "firebase/firestore";
+import { } from "firebase/firestore";
 
 async function createUserDocIfNotExists(user: UserTypes, name?: string) {
   if (!user.id) return;
@@ -55,7 +55,6 @@ export async function signUpUser(formData: FormData) {
     );
     const user = userCredential.user;
 
-    // Reuse user doc creation
     await createUserDocIfNotExists(
       { id: user.uid, email: user.email ?? undefined },
       name
@@ -65,7 +64,6 @@ export async function signUpUser(formData: FormData) {
   } catch (error: unknown) {
     console.error("Error signing up:", error);
 
-    // Provide Firebase error message if available
     let message = "An error occurred during signup.";
     if (
       typeof error === "object" &&

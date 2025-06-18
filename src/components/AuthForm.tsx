@@ -10,7 +10,7 @@ export function AuthForm() {
   const [error, setError] = useState("");
 
   const toggleForm = () => {
-    setIsSignUp(prev => !prev);
+    setIsSignUp((prev) => !prev);
     setError("");
   };
 
@@ -36,7 +36,7 @@ export function AuthForm() {
         await signInUser({ email, password });
       }
 
-      router.push("/dashboard"); // redirect after success
+      router.push("/dashboard");
     } catch (err) {
       console.error("Error:", err);
       setError("Authentication failed. Please try again.");
@@ -51,7 +51,9 @@ export function AuthForm() {
             {isSignUp ? "Sign Up" : "Sign In"}
           </h2>
 
-          {error && <p className="text-red-600 whitespace-pre-line mb-4">{error}</p>}
+          {error && (
+            <p className="text-red-600 whitespace-pre-line mb-4">{error}</p>
+          )}
 
           {isSignUp && (
             <div className="mb-4">

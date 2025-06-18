@@ -9,7 +9,10 @@ interface ProtectedRouteProps {
   redirectPath?: string;
 }
 
-export default function ProtectedRoute({ children, redirectPath = "/" }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  children,
+  redirectPath = "/login",
+}: ProtectedRouteProps) {
   const { user, loading, errors } = useUser();
   const router = useRouter();
   const [showError, setShowError] = useState<string | null>(null);
@@ -26,7 +29,7 @@ export default function ProtectedRoute({ children, redirectPath = "/" }: Protect
 
   if (loading) return <div>Loading...</div>;
   if (showError) return <div className="text-red-600">{showError}</div>;
-  if (!user?.email) return null; // avoid flash while redirecting
+  if (!user?.email) return null;
 
   console.log("Dashboard user:", user);
 

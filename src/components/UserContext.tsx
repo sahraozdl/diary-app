@@ -1,8 +1,7 @@
-// components/UserContext.tsx
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
-import { auth } from "@/firebase/config"; // adjust your import path
+import { auth } from "@/firebase/config";
 import { UserTypes } from "@/types/types";
 
 interface IUserContext {
@@ -19,7 +18,9 @@ const UserContext = createContext<IUserContext>({
   setError: () => {},
 });
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<UserTypes | null>(null);
   const [loading, setLoading] = useState(true);
   const [errors, setError] = useState<UserTypes["errors"] | null>(null);
@@ -34,7 +35,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
             email: firebaseUser.email ?? undefined,
             name: firebaseUser.displayName ?? undefined,
             photoURL: firebaseUser.photoURL ?? undefined,
-            createdAt: undefined, // You may want to fetch this from Firestore if needed
+            createdAt: undefined,
             writes: [],
             writesCount: 0,
           });

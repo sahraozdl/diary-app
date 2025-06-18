@@ -17,10 +17,9 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gray-900 text-white shadow-md p-4 flex justify-between items-center relative z-50">
+    <header className="bg-white text-black shadow-md p-4 flex justify-between items-center relative z-50">
       <h1 className="text-2xl font-extrabold tracking-tight">Idiary</h1>
 
-      {/* Desktop nav */}
       <nav className="hidden md:flex space-x-8 font-medium text-lg">
         <Link href="/" className="hover:text-gray-300 transition">
           Home
@@ -31,8 +30,8 @@ export default function Header() {
         <Link href="/profile" className="hover:text-gray-300 transition">
           Profile
         </Link>
-        <Link href="/dashboard" className="hover:text-gray-300 transition">
-          Dashboard
+        <Link href="/features" className="hover:text-gray-300 transition">
+          Features
         </Link>
         <button
           onClick={handleLogout}
@@ -42,16 +41,18 @@ export default function Header() {
         </button>
       </nav>
 
-      {/* Mobile menu button */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
         className="md:hidden p-2 rounded-md hover:bg-gray-800 transition"
         aria-label={menuOpen ? "Close menu" : "Open menu"}
       >
-        {menuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
+        {menuOpen ? (
+          <X size={28} weight="bold" />
+        ) : (
+          <List size={28} weight="bold" />
+        )}
       </button>
 
-      {/* Mobile menu */}
       {menuOpen && (
         <nav className="absolute top-full left-0 w-full bg-gray-800 flex flex-col p-4 space-y-4 md:hidden z-40 shadow-lg">
           <Link
