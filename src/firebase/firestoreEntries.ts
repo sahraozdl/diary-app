@@ -1,5 +1,6 @@
 import { db } from "./config";
 import { addDoc, collection, serverTimestamp, query, where, getDocs, orderBy } from "firebase/firestore";
+import { EntryType } from "@/types/types";
 
 type NewEntry = {
   authorId: string;
@@ -18,7 +19,6 @@ export async function addEntry(entry: NewEntry) {
   await addDoc(collection(db, "entries"), entryWithMeta);
 }
 
-// 1. Get public entries from followed users (Dashboard)
 export async function getPublicEntriesFromFollowedUsers(followingIds: string[]) {
   if (followingIds.length === 0) return [];
 
@@ -30,10 +30,15 @@ export async function getPublicEntriesFromFollowedUsers(followingIds: string[]) 
   );
 
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return querySnapshot.docs.map((doc) => {
+    const data = doc.data() as Omit<EntryType, "id">;
+    return {
+      id: doc.id,
+      ...data,
+    };
+  });
 }
 
-// 2. Get user's own entries (Profile)
 export async function getUserEntries(userId: string) {
   const q = query(
     collection(db, "entries"),
@@ -42,5 +47,11 @@ export async function getUserEntries(userId: string) {
   );
 
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return querySnapshot.docs.map((doc) => {
+    const data = doc.data() as Omit<EntryType, "id">;
+    return {
+      id: doc.id,
+      ...data,
+    };
+  });
 }

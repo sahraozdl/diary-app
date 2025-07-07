@@ -27,7 +27,8 @@ export default function GettingStarted() {
         Getting Started with Idiary
       </h2>
       <p className="mb-8 text-base max-w-[720px]">
-        It only takes a moment to begin your journey. Here’s how to get started with Idiary.
+        It only takes a moment to begin your journey. Here’s how to get started
+        with Idiary.
       </p>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-4 mb-6">
         {gettingStartedFeatures.map((feature, idx) => (

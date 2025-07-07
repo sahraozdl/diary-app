@@ -7,6 +7,7 @@ import { app } from "@/firebase/config";
 import { List, X } from "phosphor-react";
 import React, { useState } from "react";
 import ThemeToggle from "./ThemeToggleBtn";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function Header() {
       <h1 className="text-2xl font-extrabold tracking-tight">Idiary</h1>
 
       <nav className="hidden md:flex space-x-6 font-medium text-lg items-center">
+        <SearchBar />
         <Link
           href="/"
           className="hover:text-[var(--accent)] transition duration-200"
@@ -40,6 +42,12 @@ export default function Header() {
           className="hover:text-[var(--accent)] transition duration-200"
         >
           Entry
+        </Link>
+        <Link
+          href="/dashboard"
+          className="hover:text-[var(--accent)] transition duration-200"
+        >
+          Dashboard
         </Link>
         <Link
           href="/profile"

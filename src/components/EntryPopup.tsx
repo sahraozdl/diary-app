@@ -34,7 +34,9 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
       <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-lg w-full max-w-md space-y-4">
-        <h2 className="text-xl font-semibold dark:text-zinc-200">New Diary Entry</h2>
+        <h2 className="text-xl font-semibold dark:text-zinc-200">
+          New Diary Entry
+        </h2>
 
         <input
           type="text"

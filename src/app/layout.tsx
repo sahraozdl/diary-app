@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import { UserProvider } from "@/components/UserContext";
+import NewEntryButton from "@/components/NewEntryButton";
 
 export const metadata: Metadata = {
   title: "Idiary App",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <UserProvider>
           <Header />
           <main>{children}</main>
+          <NewEntryButton />
         </UserProvider>
       </body>
     </html>

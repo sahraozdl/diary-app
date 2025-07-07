@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "phosphor-react"; // or phosphor-react if preferred
+import { Moon, Sun } from "phosphor-react";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     const initial = stored || (prefersDark ? "dark" : "light");
     document.documentElement.setAttribute("data-theme", initial);
     setTheme(initial);
