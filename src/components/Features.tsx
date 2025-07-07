@@ -66,7 +66,7 @@ export default function Features() {
           {visibleFeatures.map((feature, idx) => (
             <div key={idx} className="flex flex-col gap-3 pb-3">
               <div
-                className="aspect-video bg-cover bg-center rounded-xl"
+                className="aspect-video bg-cover bg-center rounded-xl border-2 border-zinc-400"
                 style={{ backgroundImage: `url(${feature.img})` }}
               />
               <p className="text-base font-medium">{feature.title}</p>

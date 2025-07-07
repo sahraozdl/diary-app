@@ -6,31 +6,51 @@ import { useRouter } from "next/navigation";
 import { app } from "@/firebase/config";
 import { List, X } from "phosphor-react";
 import React, { useState } from "react";
+import ThemeToggle from "./ThemeToggleBtn";
 
 export default function Header() {
   const router = useRouter();
   const auth = getAuth(app);
   const [menuOpen, setMenuOpen] = useState(false);
+
   const handleLogout = async () => {
     await signOut(auth);
     router.push("/");
   };
 
   return (
-    <header className="bg-white text-black shadow-md p-4 flex justify-between items-center relative z-50">
+    <header
+      className="shadow-md p-4 flex justify-between items-center relative z-50"
+      style={{
+        backgroundColor: "var(--background)",
+        color: "var(--foreground)",
+      }}
+    >
       <h1 className="text-2xl font-extrabold tracking-tight">Idiary</h1>
 
-      <nav className="hidden md:flex space-x-8 font-medium text-lg">
-        <Link href="/" className="hover:text-gray-300 transition">
+      <nav className="hidden md:flex space-x-6 font-medium text-lg items-center">
+        <Link
+          href="/"
+          className="hover:text-[var(--accent)] transition duration-200"
+        >
           Home
         </Link>
-        <Link href="/entry" className="hover:text-gray-300 transition">
+        <Link
+          href="/entry"
+          className="hover:text-[var(--accent)] transition duration-200"
+        >
           Entry
         </Link>
-        <Link href="/profile" className="hover:text-gray-300 transition">
+        <Link
+          href="/profile"
+          className="hover:text-[var(--accent)] transition duration-200"
+        >
           Profile
         </Link>
-        <Link href="/features" className="hover:text-gray-300 transition">
+        <Link
+          href="/features"
+          className="hover:text-[var(--accent)] transition duration-200"
+        >
           Features
         </Link>
         <button
@@ -39,12 +59,17 @@ export default function Header() {
         >
           Logout
         </button>
+        <ThemeToggle />
       </nav>
 
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="md:hidden p-2 rounded-md hover:bg-gray-800 transition"
+        className="md:hidden p-2 rounded-md hover:bg-[var(--primary)] transition"
         aria-label={menuOpen ? "Close menu" : "Open menu"}
+        style={{
+          color: "var(--foreground)",
+          backgroundColor: "transparent",
+        }}
       >
         {menuOpen ? (
           <X size={28} weight="bold" />
@@ -54,31 +79,37 @@ export default function Header() {
       </button>
 
       {menuOpen && (
-        <nav className="absolute top-full left-0 w-full bg-gray-800 flex flex-col p-4 space-y-4 md:hidden z-40 shadow-lg">
+        <nav
+          className="absolute top-full left-0 w-full flex flex-col p-4 space-y-4 md:hidden z-40 shadow-lg"
+          style={{
+            backgroundColor: "var(--background)",
+            color: "var(--foreground)",
+          }}
+        >
           <Link
             href="/"
-            className="hover:text-gray-300 transition text-lg"
+            className="hover:text-[var(--accent)] transition text-lg"
             onClick={() => setMenuOpen(false)}
           >
             Home
           </Link>
           <Link
             href="/entry"
-            className="hover:text-gray-300 transition text-lg"
+            className="hover:text-[var(--accent)] transition text-lg"
             onClick={() => setMenuOpen(false)}
           >
             Entry
           </Link>
           <Link
             href="/profile"
-            className="hover:text-gray-300 transition text-lg"
+            className="hover:text-[var(--accent)] transition text-lg"
             onClick={() => setMenuOpen(false)}
           >
             Profile
           </Link>
           <Link
             href="/dashboard"
-            className="hover:text-gray-300 transition text-lg"
+            className="hover:text-[var(--accent)] transition text-lg"
             onClick={() => setMenuOpen(false)}
           >
             Dashboard

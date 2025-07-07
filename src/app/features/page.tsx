@@ -22,7 +22,7 @@ export default function AllFeaturesPage() {
               />
             </div>
             <div className="p-5">
-              <h2 className="text-xl font-semibold mb-2">{feature.title}</h2>
+              <h2 className="text-xl font-semibold mb-2 text-zinc-200">{feature.title}</h2>
               <p className="text-zinc-600 dark:text-zinc-300 mb-4">
                 {feature.desc}
               </p>

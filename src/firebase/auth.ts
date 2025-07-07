@@ -24,6 +24,8 @@ async function createUserDocIfNotExists(user: UserTypes, name?: string) {
         writes: [],
         writesCount: 0,
         createdAt: serverTimestamp(),
+        following: [],
+        followers: [],
       });
     } catch (e) {
       console.error("Failed to create user doc:", e);
