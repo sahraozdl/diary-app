@@ -7,7 +7,7 @@ import { auth, db } from "./config";
 import { getDoc, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { UserTypes } from "@/types/types";
 import { SignupFormSchema } from "@/app/lib/definitions";
-import { } from "firebase/firestore";
+import {} from "firebase/firestore";
 
 async function createUserDocIfNotExists(user: UserTypes, name?: string) {
   if (!user.id) return;
@@ -53,13 +53,13 @@ export async function signUpUser(formData: FormData) {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const user = userCredential.user;
 
     await createUserDocIfNotExists(
       { id: user.uid, email: user.email ?? undefined },
-      name
+      name,
     );
 
     return { user };
@@ -89,7 +89,11 @@ export async function signInUser({ email, password }: UserTypes) {
     throw new Error("Email and password are required.");
   }
 
-  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password,
+  );
   const user = userCredential.user;
 
   await createUserDocIfNotExists({

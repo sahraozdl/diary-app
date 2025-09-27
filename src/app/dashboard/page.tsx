@@ -16,7 +16,7 @@ export default function DashboardPage() {
     const fetchEntries = async () => {
       if (user?.following && user.following.length > 0) {
         const fetchedEntries = await getPublicEntriesFromFollowedUsers(
-          user.following
+          user.following,
         );
         setEntries(fetchedEntries);
       }

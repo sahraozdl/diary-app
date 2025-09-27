@@ -18,7 +18,7 @@ export default function NewEntryButton() {
               root.unmount();
               popup.remove();
             }}
-          />
+          />,
         );
       }}
       className="fixed bottom-6 right-6 bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full shadow-lg transition"

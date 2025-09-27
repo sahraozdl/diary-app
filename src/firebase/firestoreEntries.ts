@@ -1,5 +1,13 @@
 import { db } from "./config";
-import { addDoc, collection, serverTimestamp, query, where, getDocs, orderBy } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  query,
+  where,
+  getDocs,
+  orderBy,
+} from "firebase/firestore";
 import { EntryType } from "@/types/types";
 
 type NewEntry = {
@@ -19,14 +27,16 @@ export async function addEntry(entry: NewEntry) {
   await addDoc(collection(db, "entries"), entryWithMeta);
 }
 
-export async function getPublicEntriesFromFollowedUsers(followingIds: string[]) {
+export async function getPublicEntriesFromFollowedUsers(
+  followingIds: string[],
+) {
   if (followingIds.length === 0) return [];
 
   const q = query(
     collection(db, "entries"),
     where("authorId", "in", followingIds),
     where("visibility", "==", "public"),
-    orderBy("createdAt", "desc")
+    orderBy("createdAt", "desc"),
   );
 
   const querySnapshot = await getDocs(q);
@@ -43,7 +53,7 @@ export async function getUserEntries(userId: string) {
   const q = query(
     collection(db, "entries"),
     where("authorId", "==", userId),
-    orderBy("createdAt", "desc")
+    orderBy("createdAt", "desc"),
   );
 
   const querySnapshot = await getDocs(q);

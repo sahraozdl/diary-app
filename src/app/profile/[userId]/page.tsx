@@ -45,7 +45,7 @@ export default function ProfilePage() {
   useEffect(() => {
     if (user && profileUser) {
       setIsFollowing(
-        user.id ? profileUser.followers?.includes(user.id) || false : false
+        user.id ? profileUser.followers?.includes(user.id) || false : false,
       );
     }
   }, [user, profileUser]);
@@ -62,7 +62,7 @@ export default function ProfilePage() {
               ...prev,
               followers: prev.followers?.filter((f) => f !== user.id) ?? [],
             }
-          : prev
+          : prev,
       );
     } else {
       await followUser(user.id, profileUser.id);
@@ -73,7 +73,7 @@ export default function ProfilePage() {
               ...prev,
               followers: [...(prev.followers ?? []), user.id as string],
             }
-          : prev
+          : prev,
       );
     }
   };

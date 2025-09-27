@@ -26,7 +26,7 @@ export function AuthForm() {
           setError(
             `Invalid input:\n${user.errors.name?.join(", ") ?? ""}\n${
               user.errors.email?.join(", ") ?? ""
-            }\n${user.errors.password?.join(", ") ?? ""}`
+            }\n${user.errors.password?.join(", ") ?? ""}`,
           );
           return;
         }

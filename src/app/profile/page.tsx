@@ -15,7 +15,7 @@ export default function UserProfilePage() {
   const [following, setFollowing] = useState<UserTypes[]>([]);
   const [activeTab, setActiveTab] = useState("entries");
   const [selectedAvatar, setSelectedAvatar] = useState(
-    user?.photoURL || "/avatars/default.png"
+    user?.photoURL || "/avatars/default.png",
   );
   const [isPublic, setIsPublic] = useState(true);
 

@@ -32,4 +32,4 @@ export interface SearchUser {
   name?: string;
   email?: string;
   photoURL?: string;
-} 
+}

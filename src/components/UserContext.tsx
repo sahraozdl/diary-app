@@ -58,7 +58,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           password: undefined,
         });
         setLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();
