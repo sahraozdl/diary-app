@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Idiary App
 
-## Getting Started
+**Idiary** is a personal diary web application built with Next.js and Firebase. Users can create, share, and explore diary entries in a social-style feed while maintaining control over privacy. Some features are still under development.
 
-First, run the development server:
+---
 
+## Features
+
+### ✅ Current Features
+- **Create Diary Entries**  
+  - Users can post diary entries as **private** or **public**.  
+
+- **User Profiles**  
+  - View your own profile or search for other users.  
+  - See other users’ posts (public entries only).  
+
+- **Follow / Unfollow Users**  
+  - Users can follow or unfollow other users to customize their feed.  
+
+- **Feeds**
+  - **Dashboard Feed:** Shows entries from users you follow.  
+  - **Global Feed:** Displays all public entries (not fully implemented yet).  
+
+- **Search Users**  
+  - Quickly search for other users and visit their profile pages.  
+
+- **Theme Toggle**  
+  - Switch between light and dark themes for better user experience.  
+
+---
+
+### ⚠️ Limitations / In Development
+- Liking or saving posts is **not implemented yet**.  
+- Some features in the global feed are **still under development**.  
+- Certain UI improvements (shadows, sticky header, mobile menu) are being polished.  
+
+---
+
+## Usage
+1. **Sign up / Log in** with your account.  
+2. **Post diary entries** (choose between private or public).  
+3. **Explore feeds**:  
+   - Global Feed (public entries)  
+   - Dashboard (followed users’ entries)  
+4. **Follow or unfollow users** to see their posts in your dashboard feed.  
+5. **Search for users** and view their profile and entries.  
+6. **Toggle theme** between light and dark mode for readability.  
+
+---
+
+## Installation & Setup
+1. **Clone the repository**  
+```bash
+git clone <repo-url>
+cd idiary-app
+```
+2. **Install dependencies**
+```bash
+npm install
+```
+3. **Run the development server**
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+4. **Code formatting**
+To format your code with Prettier, run:
+```bash
+npm run format
+```
+Make sure you have your Firebase environment variables set up before running the app.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Features like like/save posts, global feed enhancements, and improved UI/UX are in progress.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Contributions are welcome to help implement missing functionality.
 
-## Learn More
+## Screenshots
 
-To learn more about Next.js, take a look at the following resources:
+![Profile Screenshot](./public/diary.png)
+![HomePage Screenshot](./public/diary2.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technologies Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-Next.js
+-React
+-Firebase (Authentication, Firestore)
+-Tailwind CSS
+-Phosphor Icons
