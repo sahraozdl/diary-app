@@ -8,11 +8,13 @@ import { List, X } from "phosphor-react";
 import React, { useState } from "react";
 import ThemeToggle from "./ThemeToggleBtn";
 import SearchBar from "./SearchBar";
+import { useUser } from "./UserContext";
 
 export default function Header() {
   const router = useRouter();
   const auth = getAuth(app);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useUser();
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -21,13 +23,14 @@ export default function Header() {
 
   return (
     <header
-      className="shadow-md p-4 flex justify-between items-center relative z-50"
+      className="sticky top-0 backdrop-blur-md bg-[var(--background)]/80 border-b border-neutral-700 p-4 flex justify-between items-center z-50"
       style={{
-        backgroundColor: "var(--background)",
         color: "var(--foreground)",
       }}
     >
-      <h1 className="text-2xl font-extrabold tracking-tight">Idiary</h1>
+      <Link href="/" className="text-2xl font-extrabold tracking-tight">
+        Idiary
+      </Link>
 
       <nav className="hidden md:flex space-x-6 font-medium text-lg items-center">
         <SearchBar />
@@ -61,12 +64,22 @@ export default function Header() {
         >
           Features
         </Link>
-        <button
-          onClick={handleLogout}
-          className="text-red-500 hover:text-red-400 transition font-semibold"
-        >
-          Logout
-        </button>
+        {user?.id && (
+          <button
+            onClick={handleLogout}
+            className="text-red-500 hover:text-red-400 transition font-semibold"
+          >
+            Logout
+          </button>
+        )}
+        {!user?.id && (
+          <Link
+            href="/login"
+            className="text-[var(--button-text)] px-4 py-2 rounded-md font-semibold"
+          >
+            Login
+          </Link>
+        )}
         <ThemeToggle />
       </nav>
 
@@ -122,15 +135,27 @@ export default function Header() {
           >
             Dashboard
           </Link>
-          <button
-            onClick={() => {
-              handleLogout();
-              setMenuOpen(false);
-            }}
-            className="text-red-500 hover:text-red-400 transition font-semibold text-left text-lg"
-          >
-            Logout
-          </button>
+          {user?.id && (
+            <button
+              onClick={() => {
+                handleLogout();
+                setMenuOpen(false);
+              }}
+              className="text-red-500 hover:text-red-400 transition font-semibold text-left text-lg"
+            >
+              Logout
+            </button>
+          )}
+          {!user?.id && (
+            <Link
+              href="/login"
+              className="text-[var(--button-text)] px-4 py-2 rounded-md font-semibold text-lg"
+              onClick={() => setMenuOpen(false)}
+            >
+              Login
+            </Link>
+          )}
+          <ThemeToggle />
         </nav>
       )}
     </header>
