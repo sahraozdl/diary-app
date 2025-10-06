@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { Moon, Sun } from "phosphor-react";
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme");
+    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)",
     ).matches;
@@ -26,15 +26,15 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center gap-2 px-4 py-2 rounded-full shadow-md font-medium transition-all duration-300 border"
+      className="flex items-center justify-center p-2 rounded-full shadow-md transition-all duration-300 border"
       style={{
         backgroundColor: "var(--primary)",
         color: "var(--background)",
         borderColor: "rgba(0,0,0,0.1)",
       }}
+      aria-label="Toggle theme"
     >
-      {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
-      {theme === "light" ? "Dark mode" : "Light mode"}
+      {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
     </button>
   );
 }
