@@ -1,17 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import {
-  signUpUser,
-  signInUser,
-  resetPassword,
-  signInWithGoogle,
-} from "@/firebase/auth";
+import { useUser } from "./UserContext";
 import { GoogleLogo } from "phosphor-react";
 import { useRouter } from "next/navigation";
 
 export function AuthForm() {
+  const { signUp, signIn, signInWithGoogle, resetPassword } = useUser();
   const router = useRouter();
+
   const [mode, setMode] = useState<"signup" | "signin" | "reset">("signup");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -22,41 +19,50 @@ export function AuthForm() {
     setMessage("");
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget as HTMLFormElement);
+    const formData = new FormData(event.currentTarget);
+
     setError("");
     setMessage("");
 
     try {
       if (mode === "signup") {
-        const user = await signUpUser(formData);
-        if (user?.errors) {
-          setError(
-            `Invalid input:\n${user.errors.name?.join(", ") ?? ""}\n${
-              user.errors.email?.join(", ") ?? ""
-            }\n${user.errors.password?.join(", ") ?? ""}`,
-          );
+        const username = formData.get("username") as string;
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+
+        const result = await signUp(username, email, password);
+        if (result?.error) {
+          setError(result.error);
           return;
         }
         router.push("/dashboard");
       } else if (mode === "signin") {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
-        await signInUser({ email, password });
+
+        const result = await signIn(email, password);
+        if (result?.error) {
+          setError(result.error);
+          return;
+        }
         router.push("/dashboard");
       } else if (mode === "reset") {
         const email = formData.get("email") as string;
         const result = await resetPassword(email);
-        if (result.success) {
-          setMessage(result.message);
+
+        if (result?.success) {
+          setMessage(result.message || "Password reset email sent.");
         } else {
-          setError(result.message);
+          setError(result?.message || "Failed to send password reset email.");
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Error:", err);
-      setError("Something went wrong. Please try again.");
+      const message =
+        err instanceof Error ? err.message : "Something went wrong.";
+      setError(message);
     }
   };
 
@@ -78,6 +84,7 @@ export function AuthForm() {
           {message && (
             <p className="text-green-600 whitespace-pre-line mb-4">{message}</p>
           )}
+
           {mode === "signup" && (
             <div className="mb-4">
               <label htmlFor="username">Username:</label>
@@ -86,9 +93,12 @@ export function AuthForm() {
                 name="username"
                 placeholder="Username"
                 className="w-full p-2 border rounded"
+                autoComplete="username"
+                required
               />
             </div>
           )}
+
           <div className="mb-4">
             <label htmlFor="email">Email:</label>
             <input
@@ -100,6 +110,7 @@ export function AuthForm() {
               required
             />
           </div>
+
           {mode !== "reset" && (
             <div className="mb-4">
               <label htmlFor="password">Password:</label>
@@ -110,6 +121,7 @@ export function AuthForm() {
                 placeholder="Password"
                 className="w-full p-2 border rounded"
                 required={mode === "signup" || mode === "signin"}
+                autoComplete="current-password"
               />
             </div>
           )}
@@ -124,15 +136,13 @@ export function AuthForm() {
                 ? "Sign In"
                 : "Send Reset Email"}
           </button>
+
           <button
             type="button"
             onClick={async () => {
               const result = await signInWithGoogle();
-              if (result.user) {
-                router.push("/dashboard");
-              } else if (result.error) {
-                setError(result.error);
-              }
+              if (result?.error) setError(result.error);
+              else router.push("/dashboard");
             }}
             className="w-full py-2 bg-white text-gray-800 border border-gray-300 rounded mt-2 flex items-center justify-center gap-2 hover:bg-gray-100 transition"
           >

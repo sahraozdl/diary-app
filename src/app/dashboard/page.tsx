@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { getPublicEntriesFromFollowedUsers } from "@/firebase/firestoreEntries";
 import EntryCard from "@/components/EntryCard";
 import { useUser } from "@/components/UserContext";
@@ -27,19 +26,17 @@ export default function DashboardPage() {
   }, [user?.following]);
 
   return (
-    <ProtectedRoute>
-      <div className="space-y-4 p-4">
-        <h1 className="text-2xl font-bold">Feed</h1>
-        {loading ? (
-          <p>Loading entries...</p>
-        ) : entries.length === 0 ? (
-          <p>No entries to show.(because you do not follow anyone)</p>
-        ) : (
-          entries.map((entry) => (
-            <EntryCard key={entry.id} entry={entry} showAuthor={true} />
-          ))
-        )}
-      </div>
-    </ProtectedRoute>
+    <div className="space-y-4 p-4">
+      <h1 className="text-2xl font-bold">Feed</h1>
+      {loading ? (
+        <p>Loading entries...</p>
+      ) : entries.length === 0 ? (
+        <p>No entries to show. (because you do not follow anyone)</p>
+      ) : (
+        entries.map((entry) => (
+          <EntryCard key={entry.id} entry={entry} showAuthor={true} />
+        ))
+      )}
+    </div>
   );
 }

@@ -12,17 +12,25 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!user?.id || !title || !content) return;
+    if (!user) {
+      console.warn("User not loaded yet");
+      return;
+    }
+    if (!title || !content) {
+      console.warn("Title or content missing");
+      return;
+    }
 
     setLoading(true);
     try {
       await addEntry({
-        authorId: user.id,
+        authorId: user.id || "unknown",
         authorName: user.name || "Anonymous",
         title,
         content,
         visibility,
       });
+      console.log("Entry added successfully!");
       onClose();
     } catch (error) {
       console.error("Failed to add entry:", error);
@@ -84,6 +92,7 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
             Cancel
           </button>
           <button
+            type="button"
             onClick={handleSubmit}
             className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition"
             disabled={loading}

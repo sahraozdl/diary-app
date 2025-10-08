@@ -14,12 +14,14 @@ export default function Header() {
   const router = useRouter();
   const auth = getAuth(app);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user } = useUser();
+  const { user, loading } = useUser();
 
   const handleLogout = async () => {
     await signOut(auth);
-    router.push("/");
+    router.push("/login");
   };
+
+  if (loading) return null;
 
   return (
     <header
@@ -34,44 +36,39 @@ export default function Header() {
 
       <nav className="hidden md:flex space-x-6 font-medium text-lg items-center">
         <SearchBar />
-        <Link
-          href="/"
-          className="hover:text-[var(--accent)] transition duration-200"
-        >
+        <Link href="/" className="hover:text-[var(--accent)] transition">
           Home
         </Link>
-        <Link
-          href="/entry"
-          className="hover:text-[var(--accent)] transition duration-200"
-        >
-          Entry
-        </Link>
-        <Link
-          href="/dashboard"
-          className="hover:text-[var(--accent)] transition duration-200"
-        >
-          Dashboard
-        </Link>
-        <Link
-          href="/profile"
-          className="hover:text-[var(--accent)] transition duration-200"
-        >
-          Profile
-        </Link>
-        <Link
-          href="/features"
-          className="hover:text-[var(--accent)] transition duration-200"
-        >
-          Features
-        </Link>
+
         {user?.id && (
-          <button
-            onClick={handleLogout}
-            className="text-red-500 hover:text-red-400 transition font-semibold"
-          >
-            Logout
-          </button>
+          <>
+            <Link
+              href="/entry"
+              className="hover:text-[var(--accent)] transition"
+            >
+              Entry
+            </Link>
+            <Link
+              href="/dashboard"
+              className="hover:text-[var(--accent)] transition"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/profile"
+              className="hover:text-[var(--accent)] transition"
+            >
+              Profile
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-red-500 hover:text-red-400 transition font-semibold"
+            >
+              Logout
+            </button>
+          </>
         )}
+
         {!user?.id && (
           <Link
             href="/login"
@@ -87,10 +84,6 @@ export default function Header() {
         onClick={() => setMenuOpen(!menuOpen)}
         className="md:hidden p-2 rounded-md hover:bg-[var(--primary)] transition"
         aria-label={menuOpen ? "Close menu" : "Open menu"}
-        style={{
-          color: "var(--foreground)",
-          backgroundColor: "transparent",
-        }}
       >
         {menuOpen ? (
           <X size={28} weight="bold" />
@@ -114,39 +107,41 @@ export default function Header() {
           >
             Home
           </Link>
-          <Link
-            href="/entry"
-            className="hover:text-[var(--accent)] transition text-lg"
-            onClick={() => setMenuOpen(false)}
-          >
-            Entry
-          </Link>
-          <Link
-            href="/profile"
-            className="hover:text-[var(--accent)] transition text-lg"
-            onClick={() => setMenuOpen(false)}
-          >
-            Profile
-          </Link>
-          <Link
-            href="/dashboard"
-            className="hover:text-[var(--accent)] transition text-lg"
-            onClick={() => setMenuOpen(false)}
-          >
-            Dashboard
-          </Link>
-          {user?.id && (
-            <button
-              onClick={() => {
-                handleLogout();
-                setMenuOpen(false);
-              }}
-              className="text-red-500 hover:text-red-400 transition font-semibold text-left text-lg"
-            >
-              Logout
-            </button>
-          )}
-          {!user?.id && (
+
+          {user?.id ? (
+            <>
+              <Link
+                href="/entry"
+                className="hover:text-[var(--accent)] transition text-lg"
+                onClick={() => setMenuOpen(false)}
+              >
+                Entry
+              </Link>
+              <Link
+                href="/dashboard"
+                className="hover:text-[var(--accent)] transition text-lg"
+                onClick={() => setMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/profile"
+                className="hover:text-[var(--accent)] transition text-lg"
+                onClick={() => setMenuOpen(false)}
+              >
+                Profile
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="text-red-500 hover:text-red-400 transition font-semibold text-left text-lg"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
             <Link
               href="/login"
               className="text-[var(--button-text)] px-4 py-2 rounded-md font-semibold text-lg"

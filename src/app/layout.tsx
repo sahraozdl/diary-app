@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { UserProvider } from "@/components/UserContext";
 import NewEntryButton from "@/components/NewEntryButton";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export const metadata: Metadata = {
   title: "Idiary App",
@@ -17,11 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
         <UserProvider>
-          <Header />
-          <main>{children}</main>
-          <NewEntryButton />
+          <ProtectedRoute>
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <NewEntryButton />
+          </ProtectedRoute>
         </UserProvider>
       </body>
     </html>

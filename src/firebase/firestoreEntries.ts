@@ -24,7 +24,15 @@ export async function addEntry(entry: NewEntry) {
     createdAt: serverTimestamp(),
   };
 
-  await addDoc(collection(db, "entries"), entryWithMeta);
+  try {
+    console.log("Attempting to add entry:", entryWithMeta);
+    const docRef = await addDoc(collection(db, "entries"), entryWithMeta);
+    console.log("Entry added successfully! ID:", docRef.id);
+  } catch (error) {
+    console.error("Failed to add entry:", error);
+    // Optional: rethrow to handle in UI
+    throw error;
+  }
 }
 
 export async function getPublicEntriesFromFollowedUsers(
