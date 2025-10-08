@@ -16,16 +16,15 @@ import { doc, getDoc } from "firebase/firestore";
 import { createUserDocIfNotExists } from "@/firebase/auth";
 import { UserTypes } from "@/types/types";
 
-// 🔹 Error type
 export interface AuthErrorTypes {
   email?: string[];
   name?: string[];
   password?: string[];
 }
 
-// 🔹 Context interface
 interface IUserContext {
   user: UserTypes | null;
+  setUser: React.Dispatch<React.SetStateAction<UserTypes | null>>;
   loading: boolean;
   errors: AuthErrorTypes | null;
   setError: React.Dispatch<React.SetStateAction<AuthErrorTypes | null>>;
@@ -45,9 +44,9 @@ interface IUserContext {
   ) => Promise<{ success?: boolean; message?: string } | void>;
 }
 
-// 🔹 Context
 const UserContext = createContext<IUserContext>({
   user: null,
+  setUser: () => {},
   loading: true,
   errors: null,
   setError: () => {},
@@ -77,7 +76,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           setUser({
             id: firebaseUser.uid,
             email: firebaseUser.email ?? undefined,
-            name: firebaseUser.displayName ?? undefined,
+            name: firebaseUser.displayName ?? userData.name ?? undefined,
             photoURL: firebaseUser.photoURL ?? undefined,
             emailVerified: firebaseUser.emailVerified,
             token,
@@ -86,6 +85,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
             writes: userData.writes ?? [],
             writesCount: userData.writesCount ?? 0,
             following: userData.following ?? [],
+            followers: userData.followers ?? [],
           });
         } else {
           setUser(null);
@@ -103,8 +103,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       await createUserDocIfNotExists(
         {
           id: cred.user.uid,
-          email: cred.user.email ?? undefined,
+          email: cred.user.email ?? "",
           name: username,
+          following: [],
+          followers: [],
+          writes: [],
+          writesCount: 0,
         },
         username,
       );
@@ -130,10 +134,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
       await createUserDocIfNotExists({
         id: user.uid,
-        email: user.email ?? undefined,
-        name: user.displayName ?? undefined,
+        email: user.email ?? "",
+        name: user.displayName ?? "",
+        following: [],
+        followers: [],
+        writes: [],
+        writesCount: 0,
       });
     } catch (err: unknown) {
       const message =
@@ -164,6 +173,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         user,
         loading,
         errors,
+        setUser,
         setError,
         signUp,
         signIn,

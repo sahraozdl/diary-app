@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getPublicEntriesFromFollowedUsers } from "@/firebase/firestoreEntries";
+import {
+  getUserEntries,
+  getPublicEntriesFromFollowedUsers,
+} from "@/firebase/firestoreEntries";
 import EntryCard from "@/components/EntryCard";
+import SkeletonLoader from "@/components/SkeletonLoader";
 import { useUser } from "@/components/UserContext";
 import { EntryType } from "@/types/types";
 
@@ -13,29 +17,40 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      if (user?.following && user.following.length > 0) {
-        const fetchedEntries = await getPublicEntriesFromFollowedUsers(
+      if (!user) return;
+
+      setLoading(true);
+
+      const myEntries = await getUserEntries(user.id);
+
+      let followedEntries: EntryType[] = [];
+      if (user.following && user.following.length > 0) {
+        followedEntries = await getPublicEntriesFromFollowedUsers(
           user.following,
         );
-        setEntries(fetchedEntries);
       }
+
+      const combined = [...myEntries, ...followedEntries].sort(
+        (a, b) => (b.createdAt?.seconds ?? 0) - (a.createdAt?.seconds ?? 0),
+      );
+
+      setEntries(combined);
       setLoading(false);
     };
 
     fetchEntries();
-  }, [user?.following]);
+  }, [user]);
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 p-4 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold">Feed</h1>
+
       {loading ? (
-        <p>Loading entries...</p>
+        <SkeletonLoader type="entry" count={5} />
       ) : entries.length === 0 ? (
-        <p>No entries to show. (because you do not follow anyone)</p>
+        <p>No entries to show.</p>
       ) : (
-        entries.map((entry) => (
-          <EntryCard key={entry.id} entry={entry} showAuthor={true} />
-        ))
+        entries.map((entry) => <EntryCard key={entry.id} entry={entry} />)
       )}
     </div>
   );

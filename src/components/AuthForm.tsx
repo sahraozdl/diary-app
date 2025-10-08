@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useUser } from "./UserContext";
-import { GoogleLogo } from "phosphor-react";
+import { GoogleLogo } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 
 export function AuthForm() {

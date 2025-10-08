@@ -2,40 +2,42 @@
 
 :root {
   --background: #ffffff;
+  --background-hover: #c7c7c7;
   --foreground: #171717;
   --primary: #cda5ee;
+  --hover-primary: #a862ef;
   --accent: #ff9e00;
-}
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans, "Inter", sans-serif);
+  --font-mono: var(--font-geist-mono, "Fira Code", monospace);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
+    --background-hover: #272727;
     --foreground: #e0e0e0;
     --primary: #9d6ecb;
+    --hover-primary: #b583f5;
     --accent: #cc7e00;
   }
 }
 
 html[data-theme="light"] {
   --background: #ffffff;
+  --background-hover: #e0e0e0;
   --foreground: #171717;
   --primary: #cda5ee;
+  --hover-primary: #a862ef;
   --accent: #ff9e00;
 }
 
 html[data-theme="dark"] {
   --background: #0a0a0a;
+  --background-hover: #272727;
   --foreground: #e0e0e0;
   --primary: #9d4edd;
+  --hover-primary: #8d47c6;
   --accent: #ff6d00;
 }
 

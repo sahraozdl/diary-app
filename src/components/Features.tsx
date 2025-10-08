@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CaretLeft, CaretRight } from "phosphor-react";
+import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 
 export const features = [
@@ -60,7 +60,7 @@ export default function Features() {
       </p>
       <div className="flex items-center gap-3 mb-4">
         <button onClick={prev}>
-          <CaretLeft size={24} />
+          <CaretLeftIcon size={24} />
         </button>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 overflow-hidden flex-1">
           {visibleFeatures.map((feature, idx) => (
@@ -75,7 +75,7 @@ export default function Features() {
           ))}
         </div>
         <button onClick={next}>
-          <CaretRight size={24} />
+          <CaretRightIcon size={24} />
         </button>
       </div>
       <Link href="/features" className="text-blue-600 hover:underline">

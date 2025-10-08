@@ -13,6 +13,8 @@ import { EntryType } from "@/types/types";
 type NewEntry = {
   authorId: string;
   authorName: string;
+  authorPhotoURL: string;
+  authorEmail: string;
   title: string;
   content: string;
   visibility: "public" | "private";
@@ -30,7 +32,6 @@ export async function addEntry(entry: NewEntry) {
     console.log("Entry added successfully! ID:", docRef.id);
   } catch (error) {
     console.error("Failed to add entry:", error);
-    // Optional: rethrow to handle in UI
     throw error;
   }
 }

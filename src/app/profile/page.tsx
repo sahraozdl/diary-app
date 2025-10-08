@@ -7,6 +7,7 @@ import { getUserEntries } from "@/firebase/firestoreEntries";
 import { getUserFollowers, getUserFollowing } from "@/firebase/firestoreUser";
 import EntryCard from "@/components/EntryCard";
 import { EntryType, UserTypes } from "@/types/types";
+import UserPreview from "@/components/UserPreview";
 
 export default function UserProfilePage() {
   const { user } = useUser();
@@ -70,7 +71,7 @@ export default function UserProfilePage() {
         </div>
       </div>
 
-      <nav className="flex space-x-4 border-b border-gray-200 dark:border-gray-700 pb-2">
+      <nav className="flex space-x-4 border-b-2 border-gray-200 dark:border-gray-700 pb-2">
         {["entries", "followers", "following", "settings"].map((tab) => (
           <button
             key={tab}
@@ -120,22 +121,11 @@ export default function UserProfilePage() {
               No followers yet.
             </p>
           ) : (
-            <ul className="space-y-3">
-              {followers.map((follower) => (
-                <li key={follower.id} className="flex items-center gap-3">
-                  <Image
-                    src={follower.photoURL || "/avatars/default.png"}
-                    alt={`${follower.name}'s avatar`}
-                    width={40}
-                    height={40}
-                    className="rounded-full object-cover"
-                  />
-                  <span className="text-gray-900 dark:text-white">
-                    {follower.name || follower.email}
-                  </span>
-                </li>
+            <div className="space-y-2">
+              {followers.map((f) => (
+                <UserPreview key={f.id} initialUser={f} />
               ))}
-            </ul>
+            </div>
           )}
         </section>
       )}
@@ -150,22 +140,11 @@ export default function UserProfilePage() {
               Not following anyone yet.
             </p>
           ) : (
-            <ul className="space-y-3">
-              {following.map((followedUser) => (
-                <li key={followedUser.id} className="flex items-center gap-3">
-                  <Image
-                    src={followedUser.photoURL || "/avatars/default.png"}
-                    alt={`${followedUser.name}'s avatar`}
-                    width={40}
-                    height={40}
-                    className="rounded-full object-cover"
-                  />
-                  <span className="text-gray-900 dark:text-white">
-                    {followedUser.name || followedUser.email}
-                  </span>
-                </li>
+            <div className="space-y-2">
+              {following.map((f) => (
+                <UserPreview key={f.id} initialUser={f} />
               ))}
-            </ul>
+            </div>
           )}
         </section>
       )}

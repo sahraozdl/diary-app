@@ -4,31 +4,43 @@ import {
   getDocs,
   query,
   where,
+  orderBy,
   QueryDocumentSnapshot,
   DocumentData,
-  orderBy,
-  getDoc,
 } from "firebase/firestore";
+import { getDoc } from "firebase/firestore";
 import { db } from "./config";
-import { EntryType } from "@/types/types";
-import { UserTypes } from "@/types/types";
+import { EntryType, UserTypes, SearchUser } from "@/types/types";
 
 export const followUser = async (
   currentUserId: string,
   targetUserId: string,
 ) => {
   const currentRef = doc(db, "users", currentUserId);
+  const targetRef = doc(db, "users", targetUserId);
+
   await updateDoc(currentRef, {
     following: arrayUnion(targetUserId),
   });
+
+  await updateDoc(targetRef, {
+    followers: arrayUnion(currentUserId),
+  });
 };
+
 export const unfollowUser = async (
   currentUserId: string,
   targetUserId: string,
 ) => {
   const currentRef = doc(db, "users", currentUserId);
+  const targetRef = doc(db, "users", targetUserId);
+
   await updateDoc(currentRef, {
     following: arrayRemove(targetUserId),
+  });
+
+  await updateDoc(targetRef, {
+    followers: arrayRemove(currentUserId),
   });
 };
 
@@ -64,17 +76,28 @@ export async function getUserFollowing(userId: string) {
   return following.filter(Boolean) as UserTypes[];
 }
 
-export async function searchUsersByName(queryString: string) {
-  const q = query(
-    collection(db, "users"),
-    where("name", ">=", queryString),
-    where("name", "<=", queryString + "\uf8ff"),
-  );
-  const results = await getDocs(q);
-  return results.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+export async function searchUsersByName(
+  queryString: string,
+): Promise<SearchUser[]> {
+  const snapshot = await getDocs(collection(db, "users"));
+
+  const lowerQuery = queryString.toLowerCase();
+
+  return snapshot.docs
+    .map((doc: QueryDocumentSnapshot<DocumentData>): SearchUser => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        name: data.name ?? undefined,
+        email: data.email ?? undefined,
+        photoURL: data.photoURL ?? undefined,
+      };
+    })
+    .filter(
+      (u) =>
+        (u.name?.toLowerCase().includes(lowerQuery) ?? false) ||
+        (u.email?.toLowerCase().includes(lowerQuery) ?? false),
+    );
 }
 
 export async function getUserById(userId: string) {
@@ -113,4 +136,26 @@ export async function getUserEntries(
     id: doc.id,
     ...(doc.data() as Omit<EntryType, "id">),
   }));
+}
+export async function getPublicEntries(): Promise<EntryType[]> {
+  try {
+    const entriesRef = collection(db, "entries");
+    const q = query(
+      entriesRef,
+      where("visibility", "==", "public"),
+      orderBy("createdAt", "desc"),
+    );
+
+    const snapshot = await getDocs(q);
+
+    const entries = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<EntryType, "id">),
+    }));
+
+    return entries;
+  } catch (error) {
+    console.error("Error fetching public entries:", error);
+    return [];
+  }
 }

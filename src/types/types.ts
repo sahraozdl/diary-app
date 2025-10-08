@@ -5,7 +5,7 @@ export interface AuthErrorTypes {
 }
 
 export interface UserTypes {
-  id?: string;
+  id: string;
   name?: string;
   email?: string;
   emailVerified?: boolean;
@@ -22,8 +22,8 @@ export interface UserTypes {
   photoURL?: string;
   createdAt?: Date;
   writes?: string[];
-  following?: string[];
-  followers?: string[];
+  following: string[];
+  followers: string[];
   writesCount?: number;
   errors?: AuthErrorTypes;
 }
@@ -32,6 +32,8 @@ export interface EntryType {
   id: string;
   authorId: string;
   authorName: string;
+  authorPhotoURL: string;
+  authorEmail: string;
   title: string;
   content: string;
   visibility: "public" | "private";

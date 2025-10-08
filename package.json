@@ -11,9 +11,9 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "firebase": "^11.9.1",
     "next": "15.3.2",
-    "phosphor-react": "^1.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

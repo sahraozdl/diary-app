@@ -33,8 +33,12 @@ export default function ProtectedRoute({
 
   if (loading)
     return (
-      <div className="flex items-center justify-center h-screen text-lg text-gray-600">
-        Loading user...
+      <div
+        className="flex items-center justify-center h-screen bg-[var(--background)] transition-colors"
+        role="status"
+        aria-label="Loading user"
+      >
+        <div className="w-12 h-12 border-4 border-gray-300 border-t-purple-600 rounded-full animate-spin"></div>
       </div>
     );
 
@@ -44,6 +48,7 @@ export default function ProtectedRoute({
         {showError}
       </div>
     );
+
   if (isPublic || user) {
     return <>{children}</>;
   }
