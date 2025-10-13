@@ -13,6 +13,7 @@ export async function createUserDocIfNotExists(user: UserTypes, name?: string) {
       id: user.id,
       email: user.email,
       name: name || user.name || "Anonymous",
+      photoURL: user.photoURL || "",
       writes: [],
       writesCount: 0,
       createdAt: serverTimestamp(),

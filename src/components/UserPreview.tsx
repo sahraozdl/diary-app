@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useMemo } from "react";
+import { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "@/firebase/config";
 import { UserTypes } from "@/types/types";
 import FollowBtn from "@/components/FollowBtn";
 import { useUser } from "@/components/UserContext";
@@ -18,12 +20,20 @@ export default function UserPreview({
 }: UserPreviewProps) {
   const [profileUser, setProfileUser] = useState<UserTypes | null>(initialUser);
   const { user } = useUser();
-  const isFollowing = useMemo(() => {
-    if (!user || !user.following) return false;
-    return user.following.includes(initialUser.id);
-  }, [user, initialUser.id]);
 
-  if (!profileUser) return null;
+  // Keep the user doc synced from Firestore
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "users", initialUser.id), (docSnap) => {
+      if (docSnap.exists()) {
+        const updatedUser = { id: docSnap.id, ...docSnap.data() } as UserTypes;
+        setProfileUser(updatedUser);
+      }
+    });
+
+    return () => unsub();
+  }, [initialUser.id]);
+
+  if (!profileUser || !user) return null;
 
   return (
     <div className="flex items-center justify-between p-2 hover:bg-[var(--background-hover)] transition-colors border-b border-[var(--foreground)]">
@@ -48,13 +58,7 @@ export default function UserPreview({
         </div>
       </Link>
 
-      {showFollowButton && (
-        <FollowBtn
-          profileUser={profileUser}
-          setProfileUser={setProfileUser}
-          isInitiallyFollowing={isFollowing}
-        />
-      )}
+      {showFollowButton && <FollowBtn profileUser={profileUser} />}
     </div>
   );
 }

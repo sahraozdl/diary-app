@@ -8,9 +8,13 @@ import { getUserFollowers, getUserFollowing } from "@/firebase/firestoreUser";
 import EntryCard from "@/components/EntryCard";
 import { EntryType, UserTypes } from "@/types/types";
 import UserPreview from "@/components/UserPreview";
+import { updateProfile } from "firebase/auth";
+import { auth } from "@/firebase/config";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
 
 export default function UserProfilePage() {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const [entries, setEntries] = useState<EntryType[]>([]);
   const [followers, setFollowers] = useState<UserTypes[]>([]);
   const [following, setFollowing] = useState<UserTypes[]>([]);
@@ -19,6 +23,7 @@ export default function UserProfilePage() {
     user?.photoURL || "/avatars/default.png",
   );
   const [isPublic, setIsPublic] = useState(true);
+  const [name, setName] = useState(user?.name || "");
 
   useEffect(() => {
     async function fetchEntries() {
@@ -44,9 +49,45 @@ export default function UserProfilePage() {
     setSelectedAvatar(avatarUrl);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Changes saved (placeholder)");
+    if (!user) return;
+
+    try {
+      // 🔹 Update Firebase Auth profile (displayName & photoURL)
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL: selectedAvatar,
+        });
+      }
+
+      // 🔹 Update Firestore document
+      const userRef = doc(db, "users", user.id);
+      await updateDoc(userRef, {
+        name,
+        photoURL: selectedAvatar,
+        isPublic,
+        updatedAt: new Date(),
+      });
+
+      // 🔹 Update global context (instant UI update)
+      setUser((prev) =>
+        prev
+          ? {
+              ...prev,
+              name,
+              photoURL: selectedAvatar,
+              isPublic,
+            }
+          : null,
+      );
+
+      alert("✅ Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating user:", error);
+      alert(" Failed to update profile. Please try again.");
+    }
   };
 
   if (!user) return <p className="p-4">Loading your profile...</p>;
@@ -162,7 +203,8 @@ export default function UserProfilePage() {
               </label>
               <input
                 type="text"
-                defaultValue={user.name}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full p-2 mt-1 border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white"
               />
             </div>

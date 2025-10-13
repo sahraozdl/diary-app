@@ -104,7 +104,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         {
           id: cred.user.uid,
           email: cred.user.email ?? "",
-          name: username,
+          photoURL: cred.user.photoURL || "",
           following: [],
           followers: [],
           writes: [],
@@ -138,6 +138,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       await createUserDocIfNotExists({
         id: user.uid,
         email: user.email ?? "",
+        photoURL: user.photoURL || "",
         name: user.displayName ?? "",
         following: [],
         followers: [],

@@ -80,10 +80,7 @@ export default function ProfilePage() {
               {profileUser?.name || profileUser?.email}
             </h2>
             <p className="text-sm text-gray-500">{profileUser?.email}</p>
-            <FollowBtn
-              profileUser={profileUser!}
-              setProfileUser={setProfileUser}
-            />
+            <FollowBtn profileUser={profileUser!} />
           </div>
         </div>
       )}

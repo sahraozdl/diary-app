@@ -69,8 +69,6 @@ export default function EntryCard({
                 followers: [],
                 following: [],
               }}
-              setProfileUser={() => {}}
-              isInitiallyFollowing={false}
             />
           )}
         </div>

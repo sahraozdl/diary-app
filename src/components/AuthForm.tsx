@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useUser } from "./UserContext";
-import { GoogleLogo } from "@phosphor-icons/react";
+import { GoogleLogoIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 
 export function AuthForm() {
@@ -146,7 +146,7 @@ export function AuthForm() {
             }}
             className="w-full py-2 bg-white text-gray-800 border border-gray-300 rounded mt-2 flex items-center justify-center gap-2 hover:bg-gray-100 transition"
           >
-            <GoogleLogo size={20} weight="fill" />
+            <GoogleLogoIcon size={20} weight="fill" />
             Continue with Google
           </button>
 
