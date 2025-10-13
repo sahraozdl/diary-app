@@ -82,7 +82,7 @@ export default function EntryCard({
         {displayedContent}
         {isLong && (
           <button
-            className="ml-1 text-[var(--primary)] font-semibold hover:text-[var(--hover-primary)] hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--primary)] rounded transition-colors"
+            className="ml-1 text-[var(--primary)] font-semibold hover:text-[var(--hover-primary)] hover:underline focus:outline-none transition-colors"
             onClick={() => setExpanded(!expanded)}
           >
             {expanded ? "Show less" : "Read more"}

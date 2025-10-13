@@ -48,7 +48,7 @@ export default function FollowBtn({ profileUser }: FollowBtnProps) {
   return (
     <button
       onClick={handleFollowToggle}
-      className="mt-2 px-4 py-1 rounded-md text-sm font-medium border bg-[var(--primary)] hover:bg-[var(--hover-primary)] text-[var(--foreground)] cursor-pointer"
+      className="mt-2 px-4 py-1 rounded-md text-sm font-medium border bg-[var(--primary)] hover:bg-[var(--hover-primary)] text-[var(--background)] cursor-pointer"
     >
       {isFollowing ? "Unfollow" : "Follow"}
     </button>

@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useUser } from "./UserContext";
-import { GoogleLogoIcon } from "@phosphor-icons/react";
+import { GoogleLogoIcon, XCircleIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 
 export function AuthForm() {
   const { signUp, signIn, signInWithGoogle, resetPassword } = useUser();
   const router = useRouter();
-
+  const [modalOpen, setModalOpen] = useState(true);
   const [mode, setMode] = useState<"signup" | "signin" | "reset">("signup");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -18,6 +18,8 @@ export function AuthForm() {
     setError("");
     setMessage("");
   };
+
+  if (!modalOpen) router.push("/");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,6 +71,12 @@ export function AuthForm() {
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-10 relative z-10 w-full max-w-md mx-auto">
+        <button
+          onClick={() => setModalOpen(false)}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 cursor-pointer"
+        >
+          <XCircleIcon size={24} />
+        </button>
         <form onSubmit={handleSubmit} className="text-black">
           <h2 className="text-2xl font-bold mb-4 text-center">
             {mode === "signup"

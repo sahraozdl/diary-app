@@ -51,7 +51,8 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-50 backdrop-blur-md bg-[var(--background)]/80 border-b border-neutral-700 p-4 flex justify-between items-center">
         <Link href="/" className="text-3xl font-extrabold tracking-tight">
-          Idiary
+          <span className="text-[var(--accent)]">I</span>
+          <span className="text-[var(--primary)]">diary</span>
         </Link>
 
         {/* Desktop nav */}

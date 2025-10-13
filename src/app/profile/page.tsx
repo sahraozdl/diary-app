@@ -83,7 +83,7 @@ export default function UserProfilePage() {
           : null,
       );
 
-      alert("✅ Profile updated successfully!");
+      alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating user:", error);
       alert(" Failed to update profile. Please try again.");
@@ -103,10 +103,10 @@ export default function UserProfilePage() {
           className="w-16 h-16 rounded-full object-cover border dark:border-gray-600"
         />
         <div className="text-center sm:text-left">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-[var(--foreground)]">
             {user.name || user.email}
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-400 dark:text-gray-500">
             {user.email}
           </p>
         </div>
@@ -119,8 +119,8 @@ export default function UserProfilePage() {
             onClick={() => setActiveTab(tab)}
             className={`px-2 pb-1 text-sm font-medium ${
               activeTab === tab
-                ? "border-b-2 border-purple-600 text-purple-600 dark:text-purple-400"
-                : "text-gray-500 dark:text-gray-400"
+                ? "border-b-2 border-purple-600 text-[var(--primary)]"
+                : "text-gray-300 dark:text-gray-600"
             }`}
           >
             {
@@ -137,11 +137,11 @@ export default function UserProfilePage() {
 
       {activeTab === "entries" && (
         <section>
-          <h2 className="text-xl font-semibold mb-3 dark:text-white">
+          <h2 className="text-xl font-semibold mb-3 text-[var(--foreground)]">
             All Your Entries
           </h2>
           {entries.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400">No entries yet.</p>
+            <p className="text-gray-300 dark:text-gray-600">No entries yet.</p>
           ) : (
             <div className="space-y-4">
               {entries.map((entry) => (
@@ -154,11 +154,11 @@ export default function UserProfilePage() {
 
       {activeTab === "followers" && (
         <section>
-          <h2 className="text-xl font-semibold mb-3 dark:text-white">
+          <h2 className="text-xl font-semibold mb-3 text-[var(--foreground)]">
             Followers
           </h2>
           {followers.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="text-gray-300 dark:text-gray-600">
               No followers yet.
             </p>
           ) : (
@@ -173,11 +173,11 @@ export default function UserProfilePage() {
 
       {activeTab === "following" && (
         <section>
-          <h2 className="text-xl font-semibold mb-3 dark:text-white">
+          <h2 className="text-xl font-semibold mb-3 text-[var(--foreground)]">
             Following
           </h2>
           {following.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="text-gray-300 dark:text-gray-600">
               Not following anyone yet.
             </p>
           ) : (
@@ -192,25 +192,25 @@ export default function UserProfilePage() {
 
       {activeTab === "settings" && (
         <section>
-          <h2 className="text-xl font-semibold mb-4 dark:text-white">
+          <h2 className="text-xl font-semibold mb-4 text-[var(--foreground)]">
             Edit Profile
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-[var(--foreground)]">
                 Name
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 mt-1 border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                className="w-full p-2 mt-1 border rounded-md bg-[var(--background)] text-[var(--foreground)]"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium mb-1 text-[var(--foreground)]">
                 Choose Avatar
               </label>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
@@ -237,7 +237,7 @@ export default function UserProfilePage() {
             </div>
 
             <div>
-              <label className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+              <label className="flex items-center gap-2 text-[var(--foreground)]">
                 <input
                   type="checkbox"
                   checked={isPublic}
@@ -250,7 +250,7 @@ export default function UserProfilePage() {
 
             <button
               type="submit"
-              className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+              className="bg-[var(--primary)] text-[var(--background)] px-4 py-2 rounded-md hover:bg-[var(--hover-primary)]"
             >
               Save Changes
             </button>

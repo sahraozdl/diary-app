@@ -18,7 +18,7 @@ export default function ProtectedRoute({
   const pathname = usePathname();
   const [showError, setShowError] = useState<string | null>(null);
 
-  const publicPaths = ["/login", "/", "/reset-password"];
+  const publicPaths = ["/login", "/", "/reset-password", "/features"];
   const isPublic = publicPaths.includes(pathname);
 
   useEffect(() => {

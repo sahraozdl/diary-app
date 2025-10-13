@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { addEntry } from "@/firebase/firestoreEntries";
 import { useUser } from "./UserContext";
+import { XCircleIcon } from "@phosphor-icons/react";
 
 export default function EntryPopup({ onClose }: { onClose: () => void }) {
   const { user } = useUser();
@@ -14,14 +15,7 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      console.warn("User not loaded yet");
-      return;
-    }
-    if (!title || !content) {
-      console.warn("Title or content missing");
-      return;
-    }
+    if (!user || !title || !content) return;
 
     setLoading(true);
     try {
@@ -34,7 +28,6 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
         content,
         visibility,
       });
-      console.log("Entry added successfully!");
       onClose();
     } catch (error) {
       console.error("Failed to add entry:", error);
@@ -46,12 +39,21 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
   if (!user) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
       <form
-        className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-lg w-full max-w-md space-y-4"
         onSubmit={handleSubmit}
+        className="relative bg-[var(--background)] p-6 rounded-3xl shadow-2xl w-full max-w-md flex flex-col space-y-4 border border-[var(--accent)]"
+        style={{ fontFamily: "var(--font-sans)" }}
       >
-        <h2 className="text-xl font-semibold dark:text-zinc-200">
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 text-[var(--foreground)] hover:text-[var(--primary)] transition cursor-pointer"
+        >
+          <XCircleIcon size={30} weight="fill" />
+        </button>
+
+        <h2 className="text-2xl font-bold text-[var(--foreground)] text-center">
           New Diary Entry
         </h2>
 
@@ -67,7 +69,7 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
         <input
           type="text"
           placeholder="Title"
-          className="w-full p-2 border rounded-md dark:bg-zinc-800 dark:text-zinc-200"
+          className="w-full p-3 border-b-2 border-[var(--accent)] bg-transparent text-[var(--foreground)] text-lg focus:outline-none focus:border-[var(--primary)] transition"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
@@ -75,46 +77,41 @@ export default function EntryPopup({ onClose }: { onClose: () => void }) {
 
         <textarea
           placeholder="Write your thoughts..."
-          className="w-full p-2 h-40 border rounded-md resize-none dark:bg-zinc-800 dark:text-zinc-200"
+          className="w-full p-3 h-48 border-b-2 border-[var(--accent)] rounded-md resize-none bg-[var(--background-hover)] text-[var(--foreground)] shadow-inner focus:outline-none focus:border-[var(--primary)] transition"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
         />
 
-        <div className="flex items-center justify-between">
-          <label className="flex items-center space-x-2 dark:text-zinc-200">
-            <span className="text-sm">Public</span>
+        <div className="flex justify-between items-center text-[var(--foreground)]">
+          <label className="flex items-center space-x-2">
             <input
               type="radio"
               name="visibility"
               value="public"
               checked={visibility === "public"}
               onChange={() => setVisibility("public")}
+              className="accent-[var(--primary)]"
             />
+            <span>Public</span>
           </label>
-          <label className="flex items-center space-x-2 dark:text-zinc-200">
-            <span className="text-sm">Private</span>
+          <label className="flex items-center space-x-2">
             <input
               type="radio"
               name="visibility"
               value="private"
               checked={visibility === "private"}
               onChange={() => setVisibility("private")}
+              className="accent-[var(--primary)]"
             />
+            <span>Private</span>
           </label>
         </div>
 
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-sm text-gray-500 hover:underline"
-          >
-            Cancel
-          </button>
+        <div className="flex justify-end mt-2">
           <button
             type="submit"
-            className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition"
+            className="bg-[var(--primary)] text-[var(--background)] px-6 py-2 rounded-full font-semibold hover:bg-[var(--hover-primary)] transition"
             disabled={loading}
           >
             {loading ? "Saving..." : "Save"}
